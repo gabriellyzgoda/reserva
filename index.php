@@ -34,6 +34,26 @@
       <div><span class="free"></span> livre</div>
     </div>
   </div>
+<div id="modal" class="modal" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <button onclick="closeModal()" style="float:right;">X</button>
+    <h2>Escolha seu horário</h2>
+    <form id="formReserva">
+      <label>Horário:
+        <input type="time" name="horario" required>
+      </label><br>
+      <label>Quantidade de pessoas:
+        <input type="number" name="quantidade" min="1" required>
+      </label><br>
+      <label>Nome:
+        <input type="text" name="nome" required>
+      </label><br>
+      <input type="hidden" name="data" id="dataEscolhida">
+      <button type="submit">Fazer reserva</button>
+    </form>
+  </div>
+</div>
+
   <script src="script.js"></script>
 </body>
 </html>
