@@ -35,6 +35,7 @@
     </div>
   </div>
 <div id="modal" class="modal" role="dialog" aria-modal="true">
+  <div id="listaReservas" style="margin-top: 10px; background: white; color: black; padding: 10px; border-radius: 8px;"></div>
   <div class="modal-content">
     <button onclick="closeModal()" style="float:right;">X</button>
     <h2>Escolha seu horário</h2>

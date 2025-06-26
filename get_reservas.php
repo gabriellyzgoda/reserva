@@ -1,11 +1,12 @@
 <?php
-$pdo = new PDO("mysql:host=localhost;dbname=reserva", "usuario", "");
+$pdo = new PDO("mysql:host=localhost;dbname=reserva", "root", ""); // ajuste usuário/senha se necessário
 
 $mes = $_GET['mes'];
 $ano = $_GET['ano'];
 
-$stmt = $pdo->prepare("SELECT DISTINCT DAY(data) as dia FROM reservas WHERE MONTH(data) = ? AND YEAR(data) = ?");
+$stmt = $pdo->prepare("SELECT nome, data, horario FROM reservas WHERE MONTH(data) = ? AND YEAR(data) = ?");
 $stmt->execute([$mes, $ano]);
 
-echo json_encode($stmt->fetchAll(PDO::FETCH_COLUMN));
-?>
+$reservas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+echo json_encode($reservas);

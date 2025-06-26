@@ -47,13 +47,30 @@ function renderCalendar(date) {
 function loadReservas(month, year) {
   fetch(`get_reservas.php?mes=${month + 1}&ano=${year}`)
     .then(res => res.json())
-    .then(diasReservados => {
-      diasReservados.forEach(dia => {
-        const cell = document.querySelector(`td[data-dia='${parseInt(dia)}']`);
-        if (cell) cell.classList.add('occupied');
+    .then(reservas => {
+      reservas.forEach(reserva => {
+        const data = new Date(reserva.data);
+        if (data.getMonth() === month && data.getFullYear() === year) {
+          const dia = data.getDate();
+          const cell = document.querySelector(`td[data-dia='${dia}']`);
+
+          if (cell) {
+            cell.classList.add("occupied");
+
+            // Cria um elemento de exibição
+            const div = document.createElement("div");
+            div.style.fontSize = "10px";
+            div.style.marginTop = "2px";
+            div.style.background = "#ffffff44";
+            div.style.borderRadius = "4px";
+            div.textContent = `${reserva.horario.substr(0,5)} - ${reserva.nome}`;
+            cell.appendChild(div);
+          }
+        }
       });
     });
 }
+
 
 document.getElementById("prevMonth").addEventListener("click", () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
@@ -86,7 +103,16 @@ document.getElementById("formReserva").addEventListener("submit", function(e) {
 function openModal(date) {
   document.getElementById("dataEscolhida").value = date;
   document.getElementById("modal").style.display = "flex";
+
+  // Buscar reservas do dia clicado
+  fetch(`get_reservas_dia.php?data=${date}`)
+    .then(res => res.json())
+    .then(reservas => {
+      const lista = reservas.map(r => `• ${r.nome} às ${r.horario} (${r.quantidade} pessoa(s))`).join('<br>');
+      document.getElementById("listaReservas").innerHTML = reservas.length ? lista : "Nenhuma reserva para este dia.";
+    });
 }
+
 
 function closeModal() {
   document.getElementById("modal").style.display = "none";
